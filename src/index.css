@@ -268,6 +268,19 @@ body {
   50% { opacity: 1; }
 }
 
+@keyframes nav-dot-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 128, 0.7), 0 0 0 0 rgba(0, 240, 255, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 15px 3px rgba(255, 0, 128, 0.4), 0 0 20px 5px rgba(0, 240, 255, 0.4);
+  }
+}
+
+.nav-dot-active {
+  animation: nav-dot-pulse 2s ease-in-out infinite;
+}
+
 @keyframes shimmer {
   0% { background-position: -1000px 0; }
   100% { background-position: 1000px 0; }

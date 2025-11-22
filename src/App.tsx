@@ -31,6 +31,8 @@ function App() {
   const [hoveredDot, setHoveredDot] = useState<number | null>(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const touchStartY = useRef(0);
+  const touchEndY = useRef(0);
   const isTouch = isTouchDevice();
   const reducedMotion = prefersReducedMotion();
   const lowEndDevice = isLowEndDevice();
@@ -72,18 +74,21 @@ function App() {
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     touchEndX.current = e.touches[0].clientX;
+    touchEndY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = () => {
     const swipeThreshold = 50;
-    const diff = touchStartX.current - touchEndX.current;
+    const diffX = touchStartX.current - touchEndX.current;
+    const diffY = touchStartY.current - touchEndY.current;
 
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
+    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
         goToNextSlide();
       } else {
         goToPrevSlide();
@@ -183,17 +188,27 @@ function App() {
                 onTouchEnd={() => {
                   setTimeout(() => setHoveredDot(null), 1000);
                 }}
-                className={`transition-all duration-300 rounded-full active:scale-90 select-none ${
+                className={`rounded-full active:scale-90 select-none ${
                   index === currentSlide
-                    ? 'bg-gradient-to-r from-[#FF0080] to-[#00F0FF]'
-                    : 'bg-white/30 hover:bg-white/50'
+                    ? 'bg-gradient-to-r from-[#FF0080] to-[#00F0FF] nav-dot-active'
+                    : 'bg-white/40 hover:bg-white/60'
                 }`}
                 style={{
-                  width: index === currentSlide ? (isTouch ? '32px' : '24px') : (isTouch ? '12px' : '8px'),
-                  height: isTouch ? '12px' : '8px',
-                  minWidth: isTouch ? '44px' : '8px',
-                  minHeight: isTouch ? '44px' : '8px',
-                  padding: isTouch ? '16px 0' : 0,
+                  width: index === currentSlide ? (isTouch ? '36px' : '28px') : (isTouch ? '14px' : '10px'),
+                  height: isTouch ? '14px' : '10px',
+                  minWidth: isTouch ? '44px' : '10px',
+                  minHeight: isTouch ? '44px' : '10px',
+                  padding: isTouch ? '15px 0' : 0,
+                  transition: 'all 0.3s ease, transform 0.2s ease',
+                  transform: hoveredDot === index && !isTouch ? 'scale(1.2)' : 'scale(1)',
+                  boxShadow: index === currentSlide
+                    ? '0 0 20px rgba(255, 0, 128, 0.5), 0 0 30px rgba(0, 240, 255, 0.3), 0 4px 15px rgba(0, 0, 0, 0.3)'
+                    : hoveredDot === index
+                    ? '0 0 12px rgba(255, 255, 255, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2)'
+                    : '0 2px 6px rgba(0, 0, 0, 0.2)',
+                  border: index === currentSlide
+                    ? '1px solid rgba(255, 255, 255, 0.3)'
+                    : '1px solid rgba(255, 255, 255, 0.1)',
                 }}
                 aria-label={`Go to slide ${index + 1}`}
               />

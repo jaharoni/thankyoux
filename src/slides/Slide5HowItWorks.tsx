@@ -52,7 +52,7 @@ export default function Slide5HowItWorks({ direction }: { direction: number }) {
         </h2>
 
         <div className="relative">
-          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-[#FF0080] via-[#00F0FF] to-[#FFD700] transform -translate-y-1/2" />
+          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-[#FF0080] via-[#00F0FF] to-[#FFD700] transform -translate-y-1/2 z-0" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 lg:gap-8 relative z-10">
             {steps.map((step, index) => {
