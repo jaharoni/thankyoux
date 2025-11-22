@@ -42,6 +42,7 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const touchStartY = useRef(0);
@@ -57,7 +58,6 @@ function App() {
       setDirection(1);
       const nextSlide = currentSlide + 1;
       setCurrentSlide(nextSlide);
-      const isMobile = window.innerWidth < 768;
       if (isMobile) {
         const slideElement = document.getElementById(`slide-${nextSlide}`);
         slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -70,7 +70,6 @@ function App() {
       setDirection(-1);
       const prevSlide = currentSlide - 1;
       setCurrentSlide(prevSlide);
-      const isMobile = window.innerWidth < 768;
       if (isMobile) {
         const slideElement = document.getElementById(`slide-${prevSlide}`);
         slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -81,7 +80,6 @@ function App() {
   const goToSlide = (index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
     setCurrentSlide(index);
-    const isMobile = window.innerWidth < 768;
     if (isMobile) {
       const slideElement = document.getElementById(`slide-${index}`);
       slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -104,7 +102,15 @@ function App() {
   }, [currentSlide]);
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     if (!isMobile) return;
 
     observerRef.current = new IntersectionObserver(
@@ -125,19 +131,22 @@ function App() {
       }
     );
 
-    slides.forEach((_, index) => {
-      const slideElement = document.getElementById(`slide-${index}`);
-      if (slideElement && observerRef.current) {
-        observerRef.current.observe(slideElement);
-      }
-    });
+    const timeoutId = setTimeout(() => {
+      slides.forEach((_, index) => {
+        const slideElement = document.getElementById(`slide-${index}`);
+        if (slideElement && observerRef.current) {
+          observerRef.current.observe(slideElement);
+        }
+      });
+    }, 100);
 
     return () => {
+      clearTimeout(timeoutId);
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [isMobile]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -292,7 +301,7 @@ function App() {
       )}
 
       <div className="relative w-full min-h-full md:h-full-viewport md:overflow-hidden" style={{ zIndex: 10 }}>
-        {window.innerWidth < 768 ? (
+        {isMobile ? (
           slides.map((SlideComponent, index) => (
             <div
               key={index}
