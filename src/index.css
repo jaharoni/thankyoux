@@ -275,57 +275,20 @@ body {
   50% { opacity: 1; }
 }
 
-@keyframes nav-dot-pulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow:
-      0 0 12px 2px rgba(255, 0, 128, 0.8),
-      0 0 20px 4px rgba(255, 0, 128, 0.6),
-      0 0 30px 6px rgba(255, 0, 128, 0.4),
-      0 0 15px 3px rgba(0, 240, 255, 0.7),
-      0 0 25px 5px rgba(0, 240, 255, 0.5),
-      inset 0 1px 2px rgba(255, 255, 255, 0.4),
-      0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-  50% {
-    transform: scale(1.1);
-    box-shadow:
-      0 0 16px 3px rgba(255, 0, 128, 1),
-      0 0 28px 5px rgba(255, 0, 128, 0.8),
-      0 0 40px 8px rgba(255, 0, 128, 0.6),
-      0 0 20px 4px rgba(0, 240, 255, 0.9),
-      0 0 32px 6px rgba(0, 240, 255, 0.7),
-      inset 0 1px 3px rgba(255, 255, 255, 0.6),
-      0 3px 10px rgba(0, 0, 0, 0.4);
-  }
-}
-
-.nav-dot-active {
-  animation: nav-dot-pulse 2s ease-in-out infinite;
-}
-
-.nav-dot-glow {
-  position: relative;
-}
-
-.nav-dot-glow::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent 50%, rgba(255, 255, 255, 0.1));
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.nav-dot-glow:hover::before {
-  opacity: 1;
-}
-
 @keyframes shimmer {
   0% { background-position: -1000px 0; }
   100% { background-position: 1000px 0; }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .animate-float {
@@ -387,14 +350,6 @@ body {
     font-size: 14px;
   }
 
-  h1 {
-    font-size: 2rem !important;
-  }
-
-  h2 {
-    font-size: 1.5rem !important;
-  }
-
   .glass-card {
     min-height: 44px;
   }
@@ -402,25 +357,5 @@ body {
   button, a, .glass-card-clickable {
     min-height: 44px;
     min-width: 44px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  h1 {
-    font-size: 3rem !important;
-  }
-
-  h2 {
-    font-size: 2rem !important;
-  }
-}
-
-@media (max-width: 767px) and (orientation: landscape) {
-  h1 {
-    font-size: 1.75rem !important;
-  }
-
-  h2 {
-    font-size: 1.25rem !important;
   }
 }

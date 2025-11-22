@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, X } from 'lucide-react';
 import { isTouchDevice, prefersReducedMotion, isLowEndDevice } from './utils/deviceDetection';
 import Slide1Cover from './slides/Slide1Cover';
 import Slide2Concept from './slides/Slide2Concept';
@@ -25,10 +25,23 @@ const slides = [
   Slide10Closing,
 ];
 
+const slideNames = [
+  'Cover',
+  'Concept',
+  'Vision',
+  'Design',
+  'How It Works',
+  'Technology',
+  'Themes',
+  'Exhibition',
+  'Collaboration',
+  'Closing',
+];
+
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [hoveredDot, setHoveredDot] = useState<number | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const touchStartY = useRef(0);
@@ -86,12 +99,23 @@ function App() {
     const swipeThreshold = 50;
     const diffX = touchStartX.current - touchEndX.current;
     const diffY = touchStartY.current - touchEndY.current;
+    const isMobile = window.innerWidth < 768;
 
-    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
-      if (diffX > 0) {
-        goToNextSlide();
-      } else {
-        goToPrevSlide();
+    if (isMobile) {
+      if (Math.abs(diffY) > swipeThreshold && Math.abs(diffY) > Math.abs(diffX)) {
+        if (diffY > 0) {
+          goToNextSlide();
+        } else {
+          goToPrevSlide();
+        }
+      }
+    } else {
+      if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0) {
+          goToNextSlide();
+        } else {
+          goToPrevSlide();
+        }
       }
     }
   };
@@ -140,108 +164,114 @@ function App() {
         </>
       )}
 
-      <div className="relative w-full h-full-viewport overflow-hidden" style={{ zIndex: 10 }}>
+      <button
+        onClick={() => setMenuOpen(true)}
+        className="fixed top-4 right-4 md:top-6 md:right-6 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 z-[100]"
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+        }}
+        aria-label="Open menu"
+      >
+        <Menu className="w-6 h-6 text-white" strokeWidth={2} />
+      </button>
+
+      {menuOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150]"
+            onClick={() => setMenuOpen(false)}
+          />
+          <div
+            className="fixed top-0 right-0 bottom-0 w-[280px] bg-[#0A0A0F]/95 backdrop-blur-xl border-l border-white/10 z-[200] overflow-y-auto"
+            style={{
+              animation: 'slideInRight 0.3s ease-out',
+            }}
+          >
+            <div className="flex items-center justify-between p-6 border-b border-white/10">
+              <h2 className="text-white text-lg font-semibold tracking-wider">Navigation</h2>
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5 text-white" strokeWidth={2} />
+              </button>
+            </div>
+            <nav className="p-4">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    goToSlide(index);
+                    setMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-3 rounded-lg mb-2 transition-all duration-300 ${
+                    index === currentSlide
+                      ? 'bg-gradient-to-r from-[#FF0080]/20 to-[#00F0FF]/20 border border-[#FF0080]/40'
+                      : 'hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`text-xs font-mono ${
+                        index === currentSlide ? 'text-[#FF0080]' : 'text-white/40'
+                      }`}
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span
+                      className={`text-sm ${
+                        index === currentSlide ? 'text-white font-medium' : 'text-white/70'
+                      }`}
+                    >
+                      {slideNames[index]}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </nav>
+          </div>
+        </>
+      )}
+
+      <div className="relative w-full h-full-viewport overflow-hidden md:overflow-hidden" style={{ zIndex: 10 }}>
         <CurrentSlideComponent direction={direction} />
       </div>
 
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-[100]">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={goToPrevSlide}
-            disabled={currentSlide === 0}
-            className="w-10 h-10 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 select-none"
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              opacity: currentSlide === 0 ? 0.3 : 1,
-              cursor: currentSlide === 0 ? 'not-allowed' : 'pointer',
-              pointerEvents: currentSlide === 0 ? 'none' : 'auto',
-            }}
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-5 h-5 md:w-4 md:h-4 text-white" strokeWidth={2} />
-          </button>
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-[100]">
+        <button
+          onClick={goToPrevSlide}
+          disabled={currentSlide === 0}
+          className="w-10 h-10 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 select-none"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            opacity: currentSlide === 0 ? 0.3 : 1,
+            cursor: currentSlide === 0 ? 'not-allowed' : 'pointer',
+            pointerEvents: currentSlide === 0 ? 'none' : 'auto',
+          }}
+          aria-label="Previous slide"
+        >
+          <ChevronLeft className="w-5 h-5 md:w-4 md:h-4 text-white" strokeWidth={2} />
+        </button>
 
-          <button
-            onClick={goToNextSlide}
-            disabled={currentSlide === slides.length - 1}
-            className="w-10 h-10 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 select-none"
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              opacity: currentSlide === slides.length - 1 ? 0.3 : 1,
-              cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer',
-              pointerEvents: currentSlide === slides.length - 1 ? 'none' : 'auto',
-            }}
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-5 h-5 md:w-4 md:h-4 text-white" strokeWidth={2} />
-          </button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {slides.map((_, index) => (
-            <div key={index} className="relative">
-              <button
-                onClick={() => goToSlide(index)}
-                onMouseEnter={() => !isTouch && setHoveredDot(index)}
-                onMouseLeave={() => !isTouch && setHoveredDot(null)}
-                onTouchStart={() => isTouch && setHoveredDot(index)}
-                onTouchEnd={() => {
-                  setTimeout(() => setHoveredDot(null), 1000);
-                }}
-                className={`rounded-full active:scale-90 select-none nav-dot-glow ${
-                  index === currentSlide
-                    ? 'nav-dot-active'
-                    : ''
-                }`}
-                style={{
-                  width: index === currentSlide ? '16px' : '8px',
-                  height: '8px',
-                  minWidth: isTouch ? '44px' : '8px',
-                  minHeight: isTouch ? '44px' : '8px',
-                  padding: isTouch ? '18px 0' : 0,
-                  background: index === currentSlide
-                    ? 'linear-gradient(135deg, #FF0080 0%, #FF0080 20%, #00F0FF 80%, #00F0FF 100%)'
-                    : hoveredDot === index
-                    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5))'
-                    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3))',
-                  transition: 'all 0.3s ease, transform 0.2s ease',
-                  transform: hoveredDot === index && !isTouch && index !== currentSlide ? 'scale(1.5)' : 'scale(1)',
-                  boxShadow: index === currentSlide
-                    ? `0 0 12px 2px rgba(255, 0, 128, 0.8),
-                       0 0 20px 4px rgba(255, 0, 128, 0.6),
-                       0 0 30px 6px rgba(255, 0, 128, 0.4),
-                       0 0 15px 3px rgba(0, 240, 255, 0.7),
-                       0 0 25px 5px rgba(0, 240, 255, 0.5),
-                       inset 0 1px 2px rgba(255, 255, 255, 0.4),
-                       0 2px 8px rgba(0, 0, 0, 0.3)`
-                    : hoveredDot === index
-                    ? `0 0 8px 2px rgba(255, 255, 255, 0.6),
-                       0 0 15px 3px rgba(255, 255, 255, 0.4),
-                       inset 0 1px 2px rgba(255, 255, 255, 0.3),
-                       0 2px 6px rgba(0, 0, 0, 0.2)`
-                    : `0 0 4px 1px rgba(255, 255, 255, 0.2),
-                       0 1px 4px rgba(0, 0, 0, 0.2),
-                       inset 0 0.5px 1px rgba(255, 255, 255, 0.2)`,
-                  border: index === currentSlide
-                    ? '1px solid rgba(255, 255, 255, 0.6)'
-                    : hoveredDot === index
-                    ? '1px solid rgba(255, 255, 255, 0.4)'
-                    : '0.5px solid rgba(255, 255, 255, 0.15)',
-                }}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-
-              {hoveredDot === index && (
-                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 rounded whitespace-nowrap"
-                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(10px)' }}>
-                  <span className="text-white text-xs tracking-wider">
-                    {index + 1}
-                  </span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+        <button
+          onClick={goToNextSlide}
+          disabled={currentSlide === slides.length - 1}
+          className="w-10 h-10 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 select-none"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            opacity: currentSlide === slides.length - 1 ? 0.3 : 1,
+            cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer',
+            pointerEvents: currentSlide === slides.length - 1 ? 'none' : 'auto',
+          }}
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-5 h-5 md:w-4 md:h-4 text-white" strokeWidth={2} />
+        </button>
       </div>
 
       <div className="fixed bottom-8 right-4 md:right-8 text-white/50 font-light text-xs md:text-sm tracking-[0.3em] z-[100]">
