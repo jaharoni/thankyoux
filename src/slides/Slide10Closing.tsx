@@ -46,7 +46,7 @@ export default function Slide10Closing({ direction }: { direction: number }) {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 lg:px-16 text-center py-8 md:py-12 lg:py-16">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 lg:px-16 text-center py-12 md:py-16 lg:py-20">
         <div className={`mb-8 md:mb-16 transition-all duration-1000 delay-200 ${
           visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}>

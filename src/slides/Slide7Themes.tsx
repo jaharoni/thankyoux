@@ -37,7 +37,7 @@ export default function Slide7Themes({ direction }: { direction: number }) {
     <div className={`w-full min-h-screen h-screen md:h-full flex items-center justify-center gradient-bg-1 transition-all duration-700 ${
       visible ? 'opacity-100' : 'opacity-0'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 w-full py-8 md:py-12 lg:py-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 w-full py-12 md:py-16 lg:py-20">
         <h2 className={`font-bold tracking-[0.15em] md:tracking-[0.2em] text-white mb-8 md:mb-12 lg:mb-16 transition-all duration-700 delay-200 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
         }`} style={{
