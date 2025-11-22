@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Menu, X } from 'lucide-react';
-import { isTouchDevice, prefersReducedMotion, isLowEndDevice } from './utils/deviceDetection';
 import Slide1Cover from './slides/Slide1Cover';
 import Slide2Concept from './slides/Slide2Concept';
 import Slide4Design from './slides/Slide4Design';
@@ -39,48 +38,28 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
-  const isTouch = isTouchDevice();
-  const reducedMotion = prefersReducedMotion();
-  const lowEndDevice = isLowEndDevice();
-  const shouldReduceEffects = isTouch || reducedMotion || lowEndDevice;
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const goToNextSlide = () => {
     if (currentSlide < slides.length - 1) {
       setDirection(1);
-      const nextSlide = currentSlide + 1;
-      setCurrentSlide(nextSlide);
-      if (isMobile) {
-        const slideElement = document.getElementById(`slide-${nextSlide}`);
-        slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      setCurrentSlide(currentSlide + 1);
     }
   };
 
   const goToPrevSlide = () => {
     if (currentSlide > 0) {
       setDirection(-1);
-      const prevSlide = currentSlide - 1;
-      setCurrentSlide(prevSlide);
-      if (isMobile) {
-        const slideElement = document.getElementById(`slide-${prevSlide}`);
-        slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      setCurrentSlide(currentSlide - 1);
     }
   };
 
   const goToSlide = (index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
     setCurrentSlide(index);
-    if (isMobile) {
-      const slideElement = document.getElementById(`slide-${index}`);
-      slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   };
 
   useEffect(() => {
@@ -98,68 +77,17 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlide]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (!isMobile) return;
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            const slideId = entry.target.id;
-            const slideIndex = parseInt(slideId.replace('slide-', ''));
-            if (!isNaN(slideIndex) && slideIndex !== currentSlide) {
-              setCurrentSlide(slideIndex);
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-        rootMargin: '0px',
-      }
-    );
-
-    const timeoutId = setTimeout(() => {
-      slides.forEach((_, index) => {
-        const slideElement = document.getElementById(`slide-${index}`);
-        if (slideElement && observerRef.current) {
-          observerRef.current.observe(slideElement);
-        }
-      });
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [isMobile]);
-
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (isMobile) return;
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (isMobile) return;
     touchEndX.current = e.touches[0].clientX;
     touchEndY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = () => {
-    if (isMobile) return;
-
     const swipeThreshold = 50;
     const diffX = touchStartX.current - touchEndX.current;
     const diffY = touchStartY.current - touchEndY.current;
@@ -177,46 +105,31 @@ function App() {
 
   return (
     <div
-      className="fixed inset-0 bg-[#0A0A0F] overflow-y-auto md:overflow-hidden snap-y snap-mandatory md:snap-none"
-      style={{ scrollBehavior: 'smooth' }}
-      onTouchStart={!isMobile ? handleTouchStart : undefined}
-      onTouchMove={!isMobile ? handleTouchMove : undefined}
-      onTouchEnd={!isMobile ? handleTouchEnd : undefined}
+      className="fixed inset-0 bg-[#0A0A0F] overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
-      {!lowEndDevice && <div className="scanlines" />}
-      {!lowEndDevice && <div className="film-grain" />}
+      <div className="scanlines" />
+      <div className="film-grain" />
 
-      {!isTouch && (
-        <>
-          <div
-            className="fixed left-0 top-0 bottom-0 w-[10%] z-1"
-            onClick={goToPrevSlide}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              goToPrevSlide();
-            }}
-            style={{
-              cursor: currentSlide === 0 ? 'default' : 'w-resize',
-              pointerEvents: currentSlide === 0 ? 'none' : 'auto'
-            }}
-          />
+      <div
+        className="fixed left-0 top-0 bottom-0 w-[10%] z-1 cursor-pointer hidden md:block"
+        onClick={goToPrevSlide}
+        style={{
+          cursor: currentSlide === 0 ? 'default' : 'w-resize',
+          pointerEvents: currentSlide === 0 ? 'none' : 'auto'
+        }}
+      />
 
-          <div
-            className="fixed right-0 top-0 bottom-0 w-[10%] z-1"
-            onClick={goToNextSlide}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              goToNextSlide();
-            }}
-            style={{
-              cursor: currentSlide === slides.length - 1 ? 'default' : 'e-resize',
-              pointerEvents: currentSlide === slides.length - 1 ? 'none' : 'auto'
-            }}
-          />
-        </>
-      )}
+      <div
+        className="fixed right-0 top-0 bottom-0 w-[10%] z-1 cursor-pointer hidden md:block"
+        onClick={goToNextSlide}
+        style={{
+          cursor: currentSlide === slides.length - 1 ? 'default' : 'e-resize',
+          pointerEvents: currentSlide === slides.length - 1 ? 'none' : 'auto'
+        }}
+      />
 
       <button
         onClick={() => setMenuOpen(true)}
@@ -290,20 +203,8 @@ function App() {
         </>
       )}
 
-      <div className="relative w-full min-h-full md:h-full-viewport md:overflow-hidden" style={{ zIndex: 10 }}>
-        {isMobile ? (
-          slides.map((SlideComponent, index) => (
-            <div
-              key={index}
-              id={`slide-${index}`}
-              className="snap-start snap-always"
-            >
-              <SlideComponent direction={direction} />
-            </div>
-          ))
-        ) : (
-          <CurrentSlideComponent direction={direction} />
-        )}
+      <div className="relative w-full h-full overflow-hidden" style={{ zIndex: 10 }}>
+        <CurrentSlideComponent direction={direction} />
       </div>
 
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-[100]">
