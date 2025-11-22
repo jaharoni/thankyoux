@@ -69,6 +69,7 @@ export default function Slide7Themes({ direction }: { direction: number }) {
                   setExpandedCard(isExpanded ? null : index);
                 }}
                 onTouchEnd={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   setExpandedCard(isExpanded ? null : index);
                 }}

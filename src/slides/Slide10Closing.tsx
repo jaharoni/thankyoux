@@ -96,8 +96,14 @@ export default function Slide10Closing({ direction }: { direction: number }) {
                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
-                onTouchStart={() => setTouchedCard(index)}
-                onTouchEnd={() => setTimeout(() => setTouchedCard(null), 300)}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  setTouchedCard(index);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  setTimeout(() => setTouchedCard(null), 300);
+                }}
               >
                 <div className="flex items-center gap-3 md:gap-4">
                   <Icon className="w-5 h-5 md:w-6 md:h-6 flex-shrink-0" style={{ color: contact.color }} strokeWidth={1.5} />

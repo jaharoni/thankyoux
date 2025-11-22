@@ -167,6 +167,7 @@ export default function Slide4Design({ direction }: { direction: number }) {
                     setExpandedIndex(isExpanded ? null : index);
                   }}
                   onTouchEnd={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     setExpandedIndex(isExpanded ? null : index);
                   }}

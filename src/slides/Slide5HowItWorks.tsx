@@ -85,6 +85,7 @@ export default function Slide5HowItWorks({ direction }: { direction: number }) {
                       setClickedStep(isClicked ? null : index);
                     }}
                     onTouchEnd={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
                       setClickedStep(isClicked ? null : index);
                     }}

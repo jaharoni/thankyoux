@@ -104,6 +104,7 @@ export default function Slide6Technology({ direction }: { direction: number }) {
                       setExpandedCard(isExpanded ? null : `hw-${index}`);
                     }}
                     onTouchEnd={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
                       setExpandedCard(isExpanded ? null : `hw-${index}`);
                     }}

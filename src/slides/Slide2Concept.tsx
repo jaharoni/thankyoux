@@ -42,6 +42,7 @@ export default function Slide2Concept({ direction }: { direction: number }) {
                 setExpandedCard(expandedCard === 'physical' ? null : 'physical');
               }}
               onTouchEnd={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 setExpandedCard(expandedCard === 'physical' ? null : 'physical');
               }}
@@ -78,6 +79,7 @@ export default function Slide2Concept({ direction }: { direction: number }) {
                 setExpandedCard(expandedCard === 'ai' ? null : 'ai');
               }}
               onTouchEnd={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 setExpandedCard(expandedCard === 'ai' ? null : 'ai');
               }}
