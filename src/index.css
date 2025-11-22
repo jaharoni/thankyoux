@@ -15,6 +15,24 @@ body {
   overflow: hidden;
 }
 
+@supports (height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+  .h-screen {
+    height: 100dvh;
+  }
+  .h-full-viewport {
+    height: 100dvh;
+  }
+}
+
+@supports not (height: 100dvh) {
+  .h-full-viewport {
+    height: 100vh;
+  }
+}
+
 .scanlines {
   position: fixed;
   top: 0;
@@ -33,6 +51,12 @@ body {
   opacity: 0.3;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .scanlines {
+    opacity: 0.1;
+  }
+}
+
 .film-grain {
   position: fixed;
   top: 0;
@@ -44,6 +68,19 @@ body {
   pointer-events: none;
   z-index: 99;
   animation: grain 8s steps(10) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-grain {
+    animation: none;
+    opacity: 0.01;
+  }
+}
+
+@media (max-width: 767px) {
+  .film-grain {
+    opacity: 0.015;
+  }
 }
 
 @keyframes grain {
@@ -65,6 +102,20 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 767px) {
+  .glass-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 .glass-card-clickable {
