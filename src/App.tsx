@@ -194,11 +194,11 @@ function App() {
                     : ''
                 }`}
                 style={{
-                  width: index === currentSlide ? (isTouch ? '36px' : '28px') : (isTouch ? '14px' : '12px'),
-                  height: isTouch ? '14px' : '12px',
-                  minWidth: isTouch ? '44px' : '12px',
-                  minHeight: isTouch ? '44px' : '12px',
-                  padding: isTouch ? '15px 0' : 0,
+                  width: index === currentSlide ? '20px' : '14px',
+                  height: index === currentSlide ? '20px' : '14px',
+                  minWidth: isTouch ? '44px' : '14px',
+                  minHeight: isTouch ? '44px' : '14px',
+                  padding: isTouch ? '12px' : 0,
                   background: index === currentSlide
                     ? 'linear-gradient(135deg, #FF0080 0%, #FF0080 20%, #00F0FF 80%, #00F0FF 100%)'
                     : hoveredDot === index
