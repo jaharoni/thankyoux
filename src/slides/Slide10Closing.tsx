@@ -17,7 +17,7 @@ export default function Slide10Closing({ direction }: { direction: number }) {
   ];
 
   return (
-    <div className={`w-full h-screen md:h-full flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
+    <div className={`w-full min-h-screen h-screen md:h-full flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
       visible ? 'opacity-100' : 'opacity-0'
     }`}>
       <div className="absolute inset-0" style={{
