@@ -146,36 +146,29 @@ function App() {
   }, [isMobile]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (isMobile) return;
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (isMobile) return;
     touchEndX.current = e.touches[0].clientX;
     touchEndY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = () => {
+    if (isMobile) return;
+
     const swipeThreshold = 50;
     const diffX = touchStartX.current - touchEndX.current;
     const diffY = touchStartY.current - touchEndY.current;
-    const isMobile = window.innerWidth < 768;
 
-    if (isMobile) {
-      if (Math.abs(diffY) > swipeThreshold && Math.abs(diffY) > Math.abs(diffX)) {
-        if (diffY > 0) {
-          goToNextSlide();
-        } else {
-          goToPrevSlide();
-        }
-      }
-    } else {
-      if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
-        if (diffX > 0) {
-          goToNextSlide();
-        } else {
-          goToPrevSlide();
-        }
+    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        goToNextSlide();
+      } else {
+        goToPrevSlide();
       }
     }
   };
@@ -186,9 +179,9 @@ function App() {
     <div
       className="fixed inset-0 bg-[#0A0A0F] overflow-y-auto md:overflow-hidden snap-y snap-mandatory md:snap-none"
       style={{ scrollBehavior: 'smooth' }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      onTouchStart={!isMobile ? handleTouchStart : undefined}
+      onTouchMove={!isMobile ? handleTouchMove : undefined}
+      onTouchEnd={!isMobile ? handleTouchEnd : undefined}
     >
       {!lowEndDevice && <div className="scanlines" />}
       {!lowEndDevice && <div className="film-grain" />}
