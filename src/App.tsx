@@ -95,13 +95,13 @@ function App() {
 
   return (
     <div
-      className="fixed inset-0 bg-[#0A0A0F] overflow-hidden select-none"
+      className="fixed inset-0 bg-[#0A0A0F] overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {!shouldReduceEffects && <div className="scanlines" />}
-      {!shouldReduceEffects && <div className="film-grain" />}
+      {!lowEndDevice && <div className="scanlines" />}
+      {!lowEndDevice && <div className="film-grain" />}
 
       {!isTouch && (
         <>
@@ -144,7 +144,7 @@ function App() {
           <button
             onClick={goToPrevSlide}
             disabled={currentSlide === 0}
-            className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+            className="w-10 h-10 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 select-none"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
               opacity: currentSlide === 0 ? 0.3 : 1,
@@ -153,13 +153,13 @@ function App() {
             }}
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-5 h-5 text-white" strokeWidth={2} />
+            <ChevronLeft className="w-5 h-5 md:w-4 md:h-4 text-white" strokeWidth={2} />
           </button>
 
           <button
             onClick={goToNextSlide}
             disabled={currentSlide === slides.length - 1}
-            className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+            className="w-10 h-10 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 select-none"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
               opacity: currentSlide === slides.length - 1 ? 0.3 : 1,
@@ -168,7 +168,7 @@ function App() {
             }}
             aria-label="Next slide"
           >
-            <ChevronRight className="w-5 h-5 text-white" strokeWidth={2} />
+            <ChevronRight className="w-5 h-5 md:w-4 md:h-4 text-white" strokeWidth={2} />
           </button>
         </div>
 
@@ -183,27 +183,20 @@ function App() {
                 onTouchEnd={() => {
                   setTimeout(() => setHoveredDot(null), 1000);
                 }}
-                className={`transition-all duration-300 rounded-full active:scale-90 flex items-center justify-center ${
+                className={`transition-all duration-300 rounded-full active:scale-90 select-none ${
                   index === currentSlide
                     ? 'bg-gradient-to-r from-[#FF0080] to-[#00F0FF]'
                     : 'bg-white/30 hover:bg-white/50'
                 }`}
                 style={{
-                  minWidth: '44px',
-                  minHeight: '44px',
-                  padding: '12px',
+                  width: index === currentSlide ? (isTouch ? '32px' : '24px') : (isTouch ? '12px' : '8px'),
+                  height: isTouch ? '12px' : '8px',
+                  minWidth: isTouch ? '44px' : '8px',
+                  minHeight: isTouch ? '44px' : '8px',
+                  padding: isTouch ? '16px 0' : 0,
                 }}
                 aria-label={`Go to slide ${index + 1}`}
-              >
-                <div
-                  className="rounded-full"
-                  style={{
-                    width: index === currentSlide ? '20px' : '8px',
-                    height: '8px',
-                    backgroundColor: 'currentColor',
-                  }}
-                />
-              </button>
+              />
 
               {hoveredDot === index && (
                 <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 rounded whitespace-nowrap"
