@@ -17,7 +17,7 @@ export default function Slide10Closing({ direction }: { direction: number }) {
   ];
 
   return (
-    <div className={`w-full min-h-full flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
+    <div className={`w-full min-h-screen md:min-h-full flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
       visible ? 'opacity-100' : 'opacity-0'
     }`}>
       <div className="absolute inset-0" style={{
@@ -46,21 +46,28 @@ export default function Slide10Closing({ direction }: { direction: number }) {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 lg:px-16 text-center py-12 md:py-16">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 lg:px-16 text-center py-8 md:py-12 lg:py-16">
         <div className={`mb-8 md:mb-16 transition-all duration-1000 delay-200 ${
           visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}>
           <div className="glass-card p-6 md:p-12 lg:p-16 rounded-3xl">
-            <p className="text-2xl md:text-4xl lg:text-5xl text-white leading-relaxed tracking-wide"
-               style={{ fontFamily: "'Fraunces', serif", fontStyle: 'italic' }}>
+            <p className="text-white leading-relaxed tracking-wide"
+               style={{
+                 fontSize: 'clamp(1.25rem, 4vw, 3rem)',
+                 fontFamily: "'Fraunces', serif",
+                 fontStyle: 'italic'
+               }}>
               "Every medium decays — but meaning can be remixed forever."
             </p>
           </div>
         </div>
 
-        <h2 className={`text-3xl md:text-5xl lg:text-6xl font-bold tracking-[0.2em] text-white mb-8 md:mb-12 transition-all duration-1000 delay-400 ${
+        <h2 className={`font-bold tracking-[0.1em] sm:tracking-[0.15em] md:tracking-[0.2em] text-white mb-6 md:mb-8 lg:mb-12 transition-all duration-1000 delay-400 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        }`} style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 'clamp(1.5rem, 5vw, 4rem)'
+        }}>
           LET'S CREATE THE FUTURE OF MEMORY
         </h2>
 

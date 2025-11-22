@@ -16,21 +16,28 @@ export default function Slide3Vision({ direction }: { direction: number }) {
   ];
 
   return (
-    <div className={`w-full min-h-full flex items-center justify-center gradient-bg-3 transition-all duration-700 ${
+    <div className={`w-full min-h-screen md:min-h-full flex items-center justify-center gradient-bg-3 transition-all duration-700 ${
       visible ? 'opacity-100' : 'opacity-0'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 w-full py-12 md:py-16">
-        <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold tracking-[0.2em] text-white mb-8 md:mb-12 transition-all duration-700 delay-200 ${
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 w-full py-8 md:py-12 lg:py-16">
+        <h2 className={`font-bold tracking-[0.15em] md:tracking-[0.2em] text-white mb-6 md:mb-8 lg:mb-12 transition-all duration-700 delay-200 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
-        }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        }`} style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 'clamp(2rem, 6vw, 4rem)'
+        }}>
           ARTISTIC VISION
         </h2>
 
         <div className={`glass-card p-8 md:p-12 rounded-3xl mb-12 md:mb-16 transition-all duration-700 delay-400 ${
           visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}>
-          <p className="text-2xl md:text-3xl lg:text-4xl text-white font-light leading-relaxed tracking-wide"
-             style={{ fontFamily: "'Fraunces', serif", fontStyle: 'italic' }}>
+          <p className="text-white font-light leading-relaxed tracking-wide"
+             style={{
+               fontSize: 'clamp(1.25rem, 3.5vw, 2.5rem)',
+               fontFamily: "'Fraunces', serif",
+               fontStyle: 'italic'
+             }}>
             "Every disc holds a memory. AI is the interpreter."
           </p>
         </div>

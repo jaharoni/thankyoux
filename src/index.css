@@ -12,7 +12,14 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  body {
+    overflow: hidden;
+  }
 }
 
 @supports (height: 100dvh) {

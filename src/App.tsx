@@ -140,7 +140,7 @@ function App() {
         </>
       )}
 
-      <div className="relative w-full h-full-viewport overflow-y-auto overflow-x-hidden" style={{ zIndex: 10 }}>
+      <div className="relative w-full min-h-full-viewport overflow-y-auto overflow-x-hidden md:h-full-viewport md:overflow-hidden" style={{ zIndex: 10 }}>
         <CurrentSlideComponent direction={direction} />
       </div>
 

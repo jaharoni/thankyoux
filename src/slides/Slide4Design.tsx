@@ -114,13 +114,16 @@ export default function Slide4Design({ direction }: { direction: number }) {
   ];
 
   return (
-    <div className={`w-full min-h-full flex items-center justify-center gradient-bg-1 transition-all duration-700 ${
+    <div className={`w-full min-h-screen md:min-h-full flex items-center justify-center gradient-bg-1 transition-all duration-700 ${
       visible ? 'opacity-100' : 'opacity-0'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 w-full py-8 md:py-0">
-        <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold tracking-[0.2em] text-white mb-12 md:mb-16 transition-all duration-700 delay-200 ${
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 w-full py-8 md:py-12 lg:py-0">
+        <h2 className={`font-bold tracking-[0.15em] md:tracking-[0.2em] text-white mb-8 md:mb-12 lg:mb-16 transition-all duration-700 delay-200 ${
           visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-        }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        }`} style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 'clamp(2rem, 6vw, 4rem)'
+        }}>
           VISUAL DESIGN
         </h2>
 

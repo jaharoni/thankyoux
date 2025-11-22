@@ -86,7 +86,7 @@ export default function Slide1Cover({ direction }: { direction: number }) {
   }, []);
 
   return (
-    <div className={`w-full min-h-full flex items-center justify-center gradient-bg-1 transition-all duration-1000 ${
+    <div className={`w-full min-h-screen md:min-h-full flex items-center justify-center gradient-bg-1 transition-all duration-1000 px-4 py-8 md:py-0 ${
       visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
     }`}>
       <div className="absolute inset-0 overflow-hidden">
@@ -103,7 +103,7 @@ export default function Slide1Cover({ direction }: { direction: number }) {
         ))}
       </div>
 
-      <div className="relative z-10 text-center px-4 md:px-8">
+      <div className="relative z-10 text-center max-w-4xl mx-auto w-full">
         <div className={`mb-8 md:mb-12 flex justify-center transition-all duration-1000 delay-300 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
         }`}>
@@ -121,19 +121,26 @@ export default function Slide1Cover({ direction }: { direction: number }) {
         </div>
 
         <h1
-          className={`text-5xl md:text-7xl lg:text-9xl font-black tracking-[0.2em] mb-4 md:mb-6 transition-all duration-1000 delay-500 ${
+          className={`font-black tracking-[0.1em] sm:tracking-[0.15em] md:tracking-[0.2em] mb-4 md:mb-6 transition-all duration-1000 delay-500 ${
             visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
-          style={{ fontFamily: "'Orbitron', sans-serif" }}
+          style={{
+            fontFamily: "'Orbitron', sans-serif",
+            fontSize: 'clamp(2.5rem, 8vw, 9rem)',
+            lineHeight: '1.1',
+          }}
         >
           <span className="glitch text-white" data-text="PLAYBACK">
             PLAYBACK
           </span>
         </h1>
 
-        <p className={`text-base md:text-xl lg:text-2xl text-white/80 font-light tracking-[0.3em] mb-3 md:mb-4 transition-all duration-1000 delay-700 ${
+        <p className={`text-white/80 font-light tracking-[0.2em] sm:tracking-[0.3em] mb-3 md:mb-4 transition-all duration-1000 delay-700 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`} style={{ fontFamily: "'Inter', sans-serif" }}>
+        }`} style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: 'clamp(0.875rem, 2.5vw, 1.5rem)'
+        }}>
           Reanimating Memory Through AI
         </p>
 
