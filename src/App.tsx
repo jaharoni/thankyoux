@@ -140,7 +140,7 @@ function App() {
         </>
       )}
 
-      <div className="relative w-full min-h-full-viewport overflow-y-auto overflow-x-hidden md:h-full-viewport md:overflow-hidden" style={{ zIndex: 10 }}>
+      <div className="relative w-full h-full-viewport overflow-hidden" style={{ zIndex: 10 }}>
         <CurrentSlideComponent direction={direction} />
       </div>
 
@@ -177,7 +177,7 @@ function App() {
           </button>
         </div>
 
-        <div className="flex items-center gap-3 md:gap-2">
+        <div className="flex items-center gap-2">
           {slides.map((_, index) => (
             <div key={index} className="relative">
               <button
@@ -194,41 +194,39 @@ function App() {
                     : ''
                 }`}
                 style={{
-                  width: index === currentSlide ? '20px' : '14px',
-                  height: index === currentSlide ? '20px' : '14px',
-                  minWidth: isTouch ? '44px' : '14px',
-                  minHeight: isTouch ? '44px' : '14px',
-                  padding: isTouch ? '12px' : 0,
+                  width: index === currentSlide ? '16px' : '8px',
+                  height: '8px',
+                  minWidth: isTouch ? '44px' : '8px',
+                  minHeight: isTouch ? '44px' : '8px',
+                  padding: isTouch ? '18px 0' : 0,
                   background: index === currentSlide
                     ? 'linear-gradient(135deg, #FF0080 0%, #FF0080 20%, #00F0FF 80%, #00F0FF 100%)'
                     : hoveredDot === index
                     ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5))'
                     : 'linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3))',
                   transition: 'all 0.3s ease, transform 0.2s ease',
-                  transform: hoveredDot === index && !isTouch && index !== currentSlide ? 'scale(1.3)' : 'scale(1)',
+                  transform: hoveredDot === index && !isTouch && index !== currentSlide ? 'scale(1.5)' : 'scale(1)',
                   boxShadow: index === currentSlide
-                    ? `0 0 25px 5px rgba(255, 0, 128, 0.9),
-                       0 0 45px 9px rgba(255, 0, 128, 0.7),
-                       0 0 65px 13px rgba(255, 0, 128, 0.5),
-                       0 0 35px 7px rgba(0, 240, 255, 0.8),
-                       0 0 55px 11px rgba(0, 240, 255, 0.6),
-                       0 0 75px 15px rgba(0, 240, 255, 0.4),
-                       inset 0 2px 8px rgba(255, 255, 255, 0.6),
-                       0 4px 20px rgba(0, 0, 0, 0.4)`
+                    ? `0 0 12px 2px rgba(255, 0, 128, 0.8),
+                       0 0 20px 4px rgba(255, 0, 128, 0.6),
+                       0 0 30px 6px rgba(255, 0, 128, 0.4),
+                       0 0 15px 3px rgba(0, 240, 255, 0.7),
+                       0 0 25px 5px rgba(0, 240, 255, 0.5),
+                       inset 0 1px 2px rgba(255, 255, 255, 0.4),
+                       0 2px 8px rgba(0, 0, 0, 0.3)`
                     : hoveredDot === index
-                    ? `0 0 20px 4px rgba(255, 255, 255, 0.8),
-                       0 0 35px 7px rgba(255, 255, 255, 0.5),
-                       0 0 50px 10px rgba(255, 255, 255, 0.3),
-                       inset 0 1px 4px rgba(255, 255, 255, 0.5),
-                       0 3px 12px rgba(0, 0, 0, 0.3)`
-                    : `0 0 8px 2px rgba(255, 255, 255, 0.3),
-                       0 2px 8px rgba(0, 0, 0, 0.3),
-                       inset 0 1px 3px rgba(255, 255, 255, 0.3)`,
+                    ? `0 0 8px 2px rgba(255, 255, 255, 0.6),
+                       0 0 15px 3px rgba(255, 255, 255, 0.4),
+                       inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                       0 2px 6px rgba(0, 0, 0, 0.2)`
+                    : `0 0 4px 1px rgba(255, 255, 255, 0.2),
+                       0 1px 4px rgba(0, 0, 0, 0.2),
+                       inset 0 0.5px 1px rgba(255, 255, 255, 0.2)`,
                   border: index === currentSlide
-                    ? '2px solid rgba(255, 255, 255, 0.8)'
+                    ? '1px solid rgba(255, 255, 255, 0.6)'
                     : hoveredDot === index
-                    ? '1.5px solid rgba(255, 255, 255, 0.6)'
-                    : '1px solid rgba(255, 255, 255, 0.2)',
+                    ? '1px solid rgba(255, 255, 255, 0.4)'
+                    : '0.5px solid rgba(255, 255, 255, 0.15)',
                 }}
                 aria-label={`Go to slide ${index + 1}`}
               />
