@@ -358,4 +358,9 @@ body {
     min-height: 44px;
     min-width: 44px;
   }
+
+  .snap-start {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
 }

@@ -50,24 +50,42 @@ function App() {
   const reducedMotion = prefersReducedMotion();
   const lowEndDevice = isLowEndDevice();
   const shouldReduceEffects = isTouch || reducedMotion || lowEndDevice;
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const goToNextSlide = () => {
     if (currentSlide < slides.length - 1) {
       setDirection(1);
-      setCurrentSlide(prev => prev + 1);
+      const nextSlide = currentSlide + 1;
+      setCurrentSlide(nextSlide);
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        const slideElement = document.getElementById(`slide-${nextSlide}`);
+        slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
 
   const goToPrevSlide = () => {
     if (currentSlide > 0) {
       setDirection(-1);
-      setCurrentSlide(prev => prev - 1);
+      const prevSlide = currentSlide - 1;
+      setCurrentSlide(prevSlide);
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        const slideElement = document.getElementById(`slide-${prevSlide}`);
+        slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
 
   const goToSlide = (index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
     setCurrentSlide(index);
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      const slideElement = document.getElementById(`slide-${index}`);
+      slideElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   useEffect(() => {
@@ -84,6 +102,42 @@ function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlide]);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const slideId = entry.target.id;
+            const slideIndex = parseInt(slideId.replace('slide-', ''));
+            if (!isNaN(slideIndex) && slideIndex !== currentSlide) {
+              setCurrentSlide(slideIndex);
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '0px',
+      }
+    );
+
+    slides.forEach((_, index) => {
+      const slideElement = document.getElementById(`slide-${index}`);
+      if (slideElement && observerRef.current) {
+        observerRef.current.observe(slideElement);
+      }
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -124,7 +178,8 @@ function App() {
 
   return (
     <div
-      className="fixed inset-0 bg-[#0A0A0F] overflow-y-auto md:overflow-hidden"
+      className="fixed inset-0 bg-[#0A0A0F] overflow-y-auto md:overflow-hidden snap-y snap-mandatory md:snap-none"
+      style={{ scrollBehavior: 'smooth' }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -237,7 +292,19 @@ function App() {
       )}
 
       <div className="relative w-full min-h-full md:h-full-viewport md:overflow-hidden" style={{ zIndex: 10 }}>
-        <CurrentSlideComponent direction={direction} />
+        {window.innerWidth < 768 ? (
+          slides.map((SlideComponent, index) => (
+            <div
+              key={index}
+              id={`slide-${index}`}
+              className="snap-start snap-always"
+            >
+              <SlideComponent direction={direction} />
+            </div>
+          ))
+        ) : (
+          <CurrentSlideComponent direction={direction} />
+        )}
       </div>
 
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-[100]">
