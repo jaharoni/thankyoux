@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight, Menu, X } from 'lucide-react';
 import { isTouchDevice, prefersReducedMotion, isLowEndDevice } from './utils/deviceDetection';
 import Slide1Cover from './slides/Slide1Cover';
 import Slide2Concept from './slides/Slide2Concept';
-import Slide3Vision from './slides/Slide3Vision';
 import Slide4Design from './slides/Slide4Design';
 import Slide5HowItWorks from './slides/Slide5HowItWorks';
 import Slide6Technology from './slides/Slide6Technology';
@@ -15,7 +14,6 @@ import Slide10Closing from './slides/Slide10Closing';
 const slides = [
   Slide1Cover,
   Slide2Concept,
-  Slide3Vision,
   Slide4Design,
   Slide5HowItWorks,
   Slide6Technology,
@@ -28,7 +26,6 @@ const slides = [
 const slideNames = [
   'Cover',
   'Concept',
-  'Vision',
   'Design',
   'How It Works',
   'Technology',
