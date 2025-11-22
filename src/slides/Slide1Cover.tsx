@@ -86,7 +86,7 @@ export default function Slide1Cover({ direction }: { direction: number }) {
   }, []);
 
   return (
-    <div className={`w-full h-full flex items-center justify-center gradient-bg-1 transition-all duration-1000 px-4 py-safe md:py-0 ${
+    <div className={`w-full min-h-screen md:h-full flex items-center justify-center gradient-bg-1 transition-all duration-1000 px-4 py-8 md:py-0 ${
       visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
     }`}>
       <div className="absolute inset-0 overflow-hidden">

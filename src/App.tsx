@@ -124,7 +124,7 @@ function App() {
 
   return (
     <div
-      className="fixed inset-0 bg-[#0A0A0F] overflow-hidden"
+      className="fixed inset-0 bg-[#0A0A0F] overflow-y-auto md:overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -236,7 +236,7 @@ function App() {
         </>
       )}
 
-      <div className="relative w-full h-full-viewport overflow-hidden md:overflow-hidden" style={{ zIndex: 10 }}>
+      <div className="relative w-full min-h-full md:h-full-viewport md:overflow-hidden" style={{ zIndex: 10 }}>
         <CurrentSlideComponent direction={direction} />
       </div>
 

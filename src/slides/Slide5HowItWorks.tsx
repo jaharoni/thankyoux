@@ -41,7 +41,7 @@ export default function Slide5HowItWorks({ direction }: { direction: number }) {
   ];
 
   return (
-    <div className={`w-full h-full flex items-center justify-center gradient-bg-2 transition-all duration-700 ${
+    <div className={`w-full min-h-screen md:h-full flex items-center justify-center gradient-bg-2 transition-all duration-700 ${
       visible ? 'opacity-100' : 'opacity-0'
     }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 w-full py-8 md:py-12 lg:py-0">
